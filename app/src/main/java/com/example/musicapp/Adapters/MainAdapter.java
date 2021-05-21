@@ -1,16 +1,12 @@
 package com.example.musicapp.Adapters;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,11 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.musicapp.Fragments.Downloaded;
 import com.example.musicapp.Model.Song;
 import com.example.musicapp.R;
 
@@ -41,7 +35,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
     View.OnLongClickListener onLongClickListener;
 
     public MainAdapter(Context mcontext, List<Song> mSongs) {
-
         this.mcontext = mcontext;
         this.mSongs = mSongs;
     }
@@ -80,11 +73,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
                 alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Downloaded downloaded=new Downloaded();
-                                Bundle bundle=new Bundle();
-                                bundle.putString("Name",song.getTitle());
-                                bundle.putString("Image",song.getImage());
-                                downloaded.setArguments(bundle);
                                 mdownloaded.add(song.getTitle());
                                 holder.download_button.setImageResource(R.drawable.ic_baseline_check_24);
                             }
@@ -137,7 +125,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
     @Override
     public boolean onLongClick(View v) {
         onLongClickListener.onLongClick(v);
-
         return false;
     }
 
@@ -151,16 +138,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
             songname=itemView.findViewById(R.id.song_name);
             profile_image=itemView.findViewById(R.id.profile_image);
             download_button=itemView.findViewById(R.id.download_button);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openBottomSheet(v);
-                }
-            });
-        }
-
-        private void openBottomSheet(View v) {
-
         }
 
     }
@@ -175,4 +152,5 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
         MimeTypeMap mimeTypeMap=MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(resolver.getType(uri));
     }
+
 }

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Feed extends Fragment {
+public class Feed extends Fragment  {
     private RecyclerView recyclerView;
     private MainAdapter mainAdapter;
     private List<Song> msongs;
@@ -52,8 +53,9 @@ public class Feed extends Fragment {
     private TextView song_name;
     private ImageView profile,play_button;
     private int position;
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private Button close;
+
     private Handler handler=new Handler();
 
     @Override
@@ -71,8 +73,7 @@ public class Feed extends Fragment {
     }
 
     private void readSongs() {
-        Toast.makeText(getContext(), "Give it a second!", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(), "Long press to play the song", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Long press to play the song", Toast.LENGTH_LONG).show();
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -87,6 +88,7 @@ public class Feed extends Fragment {
                         msongs.add(item);
                     }
                     mainAdapter=new MainAdapter(getContext(),msongs);
+
                     mainAdapter.onLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
@@ -114,6 +116,7 @@ public class Feed extends Fragment {
 
     public void startDialog() {
         bottomSheetDialog = new BottomSheetDialog(getContext());
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
         mediaPlayer=new MediaPlayer();
         View view=getActivity().getLayoutInflater().from(getContext()).inflate(R.layout.layout_dialog,null);
 
@@ -157,9 +160,5 @@ public class Feed extends Fragment {
         bottomSheetDialog.show();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        //bottomSheetDialog.dismiss();
-    }
+
 }

@@ -10,21 +10,40 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.musicapp.Fragments.Downloaded;
 import com.example.musicapp.Fragments.Feed;
 import com.example.musicapp.Fragments.Local;
 import com.google.android.material.tabs.TabLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int WRITE_PERMISSION = 1001;
+    LinearLayout parentLinearLayout;
+    private SpeechRecognizer speechRecognizer;
+    private Intent speechRecognizerIntent;
+    private String keeper="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         final ViewPager viewpager=findViewById(R.id.view_pager);
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new Feed(),"Feed");
-        viewPagerAdapter.addFragment(new Downloaded(),"Downloaded");
+        //viewPagerAdapter.addFragment(new Downloaded(),"Downloaded");
         viewPagerAdapter.addFragment(new Local(),"Local");
         viewpager.setAdapter(viewPagerAdapter);
 
@@ -90,4 +109,5 @@ public class MainActivity extends AppCompatActivity {
             return titles.get(position);
         }
     }
+
 }
